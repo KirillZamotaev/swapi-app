@@ -16,11 +16,10 @@ export const usePerson = (name = '') => {
         } else {
           const data = await People.findBySearch([name])
           const people = data?.resources?.map(({ value }) => value)
-          const [man] = people
-
-          setData(man)
-
-          localStorage.setItem(id, JSON.stringify(man))
+          if (Array.isArray(people)) {
+            const [man] = people
+            setData(man)
+          }
         }
       } catch (err) {
         console.log(err)
@@ -28,6 +27,10 @@ export const usePerson = (name = '') => {
         setLoading(false)
       }
     }
+  }
+
+  const saveData = (data: IPeople) => {
+    localStorage.setItem(id, JSON.stringify(data))
   }
 
   useEffect(() => {
@@ -38,6 +41,7 @@ export const usePerson = (name = '') => {
     id,
     isLoading,
     data,
-    setData
+    setData,
+    saveData
   }
 }

@@ -9,7 +9,7 @@ type RouteParams = Record<string, string | undefined>
 
 export const PersonDetail: React.FC = () => {
   const { name } = useParams<RouteParams>()
-  const { data, setData, isLoading } = usePerson(name)
+  const { data, setData, saveData, isLoading } = usePerson(name)
   const [isEditMode, setIsEditMode] = useState(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,10 @@ export const PersonDetail: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    setIsEditMode(false)
+    if (data) {
+      saveData(data)
+      setIsEditMode(false)
+    }
   }
 
   const toggleEditMode = () => {
